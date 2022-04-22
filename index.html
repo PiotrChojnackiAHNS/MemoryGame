@@ -19,29 +19,26 @@
             </div>
             <div class="details">
                <div class="score">
-                  <p><strong>Czas:</strong> <span>03:32</span></p>
-                  <p><strong>Ruchy:</strong> <span>03</span></p>
+                  <p><strong>Czas:</strong> <span id="game-timer">00:00</span></p>
+                  <p><strong>Ruchy:</strong> <span id="game-moves">00</span></p>
                </div>
                <div class="links">
-                  <button>Start again</button>
+                  <button id="start-button">Start game</button>
                </div>
             </div>
          </div>
       </header>
 
       <div class="container">
-         <section class="game">
-            <div class="card">
-               <div class="card-inner">
-                  <div class="front"></div>
-                  <div class="back">
-                     <img src="./assets/card-images/carrots.png" alt="card image" />
-                  </div>
-               </div>
+         <section id="game">
+            <div class="hello-box" id="hello-box">
+               <p>Kliknij aby rozpocząć nową grę</p>
+               <button id="hello-start-button">Start game</button>
             </div>
          </section>
       </div>
 
       <script src="scripts/index.js"></script>
+      <script src="scripts/game.js"></script>
    </body>
 </html>
