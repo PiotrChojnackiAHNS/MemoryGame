@@ -20,6 +20,7 @@ class Game {
    constructor() {
       this.startTime = new Date();
       this.cardsOpen = [];
+      this.disabledInput = false;
 
       // Generate cards
       this.cards = availibleCards.sort(() => 0.5 - Math.random()).slice(0, cardsCount);
@@ -64,8 +65,7 @@ class Game {
          cardWrapper.classList.add("card");
 
          cardWrapper.addEventListener("click", (e) => {
-            cardWrapper.classList.toggle("open");
-            this.cards[index].open = true;
+            this.openCard(card, cardWrapper);
          });
 
          const cardInner = document.createElement("div");
@@ -88,6 +88,40 @@ class Game {
 
          gameContainer.appendChild(cardWrapper);
       });
+   }
+
+   openCard(card, cardWrapper) {
+      if (this.cardsOpen.length <= 2 && !this.disabledInput) {
+         this.disabledInput = true;
+         this.cardsOpen.push(card);
+         cardWrapper.classList.toggle("open");
+
+         // Second card
+         if (this.cardsOpen.length == 2) {
+            setTimeout(() => {
+               if (this.cardsOpen[0].name === this.cardsOpen[1].name) {
+                  // Same cards
+                  this.cardsOpen.forEach((card) => {
+                     card.discovered = true;
+                     document.getElementsByClassName("card")[card.id].classList.add("hidden");
+                  });
+               } else {
+                  this.cardsOpen.forEach((card) => {
+                     document.getElementsByClassName("card")[card.id].classList.remove("open");
+                  });
+               }
+
+               this.cardsOpen = [];
+               this.disabledInput = false;
+            }, 500);
+
+            const moves = document.getElementById("game-moves");
+            const movesCount = parseInt(moves.innerText);
+            moves.innerText = movesCount >= 9 ? movesCount + 1 : `0${movesCount + 1}`;
+         } else {
+            this.disabledInput = false;
+         }
+      }
    }
 
    finishGame() {

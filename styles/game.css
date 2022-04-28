@@ -1,6 +1,5 @@
 section#game {
    margin-top: 2rem;
-   background-color: var(--gray-color);
    display: flex;
    flex-wrap: wrap;
    justify-content: center;
@@ -11,9 +10,14 @@ section#game .card {
    height: 200px;
    background-color: transparent;
    margin: 0.5rem;
+   transition: all ease-in-out 200ms;
 
    perspective: 1000px;
    transform-style: preserve-3d;
+}
+
+section#game .card.hidden {
+   opacity: 0;
 }
 
 section#game .card .card-inner {
