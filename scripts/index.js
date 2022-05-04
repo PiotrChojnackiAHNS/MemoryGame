@@ -9,7 +9,7 @@ window.addEventListener("load", (event) => {
          game = new Game();
       } else {
          e.target.innerText = "Start game";
-         game.finishGame();
+         game.finishGame(true);
          game = null;
       }
    });

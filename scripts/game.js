@@ -14,13 +14,16 @@ const availibleCards = [
    "steak",
 ];
 
-const cardsCount = 8;
+const cardsCount = 12;
 
 class Game {
    constructor() {
       this.startTime = new Date();
-      this.cardsOpen = [];
+      this.moveCounter = 0;
       this.disabledInput = false;
+
+      this.cardsOpen = [];
+      this.cardsLeft = cardsCount * 2;
 
       // Generate cards
       this.cards = availibleCards.sort(() => 0.5 - Math.random()).slice(0, cardsCount);
@@ -38,8 +41,7 @@ class Game {
       }, 1000);
 
       // Update DOM elements
-      document.getElementById("game-timer").innerText = "00:00";
-      document.getElementById("game-moves").innerText = "00";
+      clearTimers();
       this.renderCards();
    }
 
@@ -60,33 +62,8 @@ class Game {
       const gameContainer = document.getElementById("game");
       gameContainer.innerHTML = "";
 
-      this.cards.forEach((card, index) => {
-         const cardWrapper = document.createElement("div");
-         cardWrapper.classList.add("card");
-
-         cardWrapper.addEventListener("click", (e) => {
-            this.openCard(card, cardWrapper);
-         });
-
-         const cardInner = document.createElement("div");
-         cardInner.classList.add("card-inner");
-
-         const cardFront = document.createElement("div");
-         cardFront.classList.add("front");
-
-         const cardBack = document.createElement("div");
-         cardBack.classList.add("back");
-
-         const img = document.createElement("img");
-         img.src = `./assets/card-images/${card.name}.png`;
-         img.alt = "card image";
-
-         cardBack.appendChild(img);
-         cardInner.appendChild(cardFront);
-         cardInner.appendChild(cardBack);
-         cardWrapper.appendChild(cardInner);
-
-         gameContainer.appendChild(cardWrapper);
+      this.cards.forEach((card) => {
+         appendCard(card, gameContainer, (card, cardWrapper) => this.openCard(card, cardWrapper));
       });
    }
 
@@ -101,6 +78,7 @@ class Game {
             setTimeout(() => {
                if (this.cardsOpen[0].name === this.cardsOpen[1].name) {
                   // Same cards
+                  this.cardsLeft -= 2;
                   this.cardsOpen.forEach((card) => {
                      card.discovered = true;
                      document.getElementsByClassName("card")[card.id].classList.add("hidden");
@@ -113,18 +91,30 @@ class Game {
 
                this.cardsOpen = [];
                this.disabledInput = false;
+
+               if (this.cardsLeft == 0) {
+                  this.finishGame(false);
+               }
             }, 500);
 
-            const moves = document.getElementById("game-moves");
-            const movesCount = parseInt(moves.innerText);
-            moves.innerText = movesCount >= 9 ? movesCount + 1 : `0${movesCount + 1}`;
+            this.incrementMoveCounter();
          } else {
             this.disabledInput = false;
          }
       }
    }
 
-   finishGame() {
+   incrementMoveCounter() {
+      const moves = document.getElementById("game-moves");
+      this.moveCounter += 1;
+      moves.innerText = this.moveCounter >= 9 ? this.moveCounter : `0${this.moveCounter}`;
+   }
+
+   finishGame(forced) {
+      if (!forced) {
+         showCongratulations();
+      }
+
       clearInterval(this.timeInterval);
    }
 }

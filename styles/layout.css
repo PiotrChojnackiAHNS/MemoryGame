@@ -32,3 +32,33 @@ header > .container > .details > .links > button {
    font-weight: bold;
    color: var(--dark-color);
 }
+
+/* Congratulations */
+#congratulations-wrapper {
+   position: fixed;
+   left: 50%;
+   top: 0;
+   transform: translateX(-50%);
+   text-align: center;
+}
+
+#congratulations-wrapper .congratulations {
+   transition: all ease-in-out 500ms;
+   opacity: 1;
+}
+
+#congratulations-wrapper .congratulations.hidden {
+   opacity: 0;
+}
+
+#congratulations-wrapper .confetti {
+   width: 100%;
+   margin: 0 auto;
+}
+
+#congratulations-wrapper h1 {
+   font-size: 4.5rem;
+   position: relative;
+   top: -20rem;
+   color: var(--alt-color);
+}
