@@ -12,6 +12,15 @@ header .container {
    padding: 1rem;
 }
 
+@media (max-width: 500px) {
+   header .logo {
+      display: none;
+   }
+   header .conntainer {
+      justify-content: end;
+   }
+}
+
 header > .container > .details {
    display: flex;
    align-items: center;

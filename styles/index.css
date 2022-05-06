@@ -33,20 +33,16 @@ button {
 
 .container {
    width: 100%;
+   padding: 0.5rem;
 }
 
 @media (min-width: 760px) {
    .container {
-      width: 740px;
-   }
-}
-@media (min-width: 980px) {
-   .container {
-      width: 950px;
+      width: 700px;
    }
 }
 @media (min-width: 1200px) {
    .container {
-      width: 1150px;
+      width: 1000px;
    }
 }

@@ -6,10 +6,10 @@ section#game {
 }
 
 section#game .card {
-   width: 150px;
-   height: 200px;
+   width: calc(150px * 0.9);
+   height: calc(200px * 0.9);
    background-color: transparent;
-   margin: 0.5rem;
+   margin: 0.3rem;
    transition: all ease-in-out 200ms;
 
    perspective: 1000px;
@@ -29,6 +29,14 @@ section#game .card .card-inner {
    transform-style: preserve-3d;
 }
 
+/* Hello text */
+h2 {
+   font-size: 2rem;
+   text-align: center;
+   color: var(--light-color);
+}
+
+/* Card */
 .card.open .card-inner {
    transform: rotateY(180deg);
 }
@@ -38,6 +46,7 @@ section#game .card .card-inner {
    position: absolute;
    width: 100%;
    height: 100%;
+   background-size: contain;
    -webkit-backface-visibility: hidden;
    backface-visibility: hidden;
 }
@@ -52,4 +61,15 @@ section#game .card .card-inner {
    display: flex;
    align-items: center;
    justify-content: center;
+}
+
+@media (max-width: 500px) {
+   section#game .card {
+      width: calc(150px * 0.8);
+      height: calc(200px * 0.8);
+   }
+
+   .back img {
+      width: 100px;
+   }
 }

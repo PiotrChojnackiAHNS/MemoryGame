@@ -1,16 +1,27 @@
 let game = null;
 
+const gameStartEvent = new Event("gameStart");
+const gameFinishEvent = new Event("gameFinish");
+
 window.addEventListener("load", (event) => {
    const cards = document.getElementsByClassName("card");
+   const startButton = document.getElementById("start-button");
 
-   document.getElementById("start-button").addEventListener("click", (e) => {
+   startButton.addEventListener("click", (e) => {
       if (!game) {
-         e.target.innerText = "Stop game";
          game = new Game();
       } else {
-         e.target.innerText = "Start game";
          game.finishGame(true);
-         game = null;
       }
+   });
+
+   document.addEventListener("gameStart", () => {
+      startButton.innerText = "Stop game";
+   });
+
+   document.addEventListener("gameFinish", () => {
+      startButton.innerText = "Start game";
+      showHelloScreen();
+      game = null;
    });
 });

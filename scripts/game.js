@@ -18,6 +18,8 @@ const cardsCount = 12;
 
 class Game {
    constructor() {
+      document.dispatchEvent(gameStartEvent);
+
       this.startTime = new Date();
       this.moveCounter = 0;
       this.disabledInput = false;
@@ -68,40 +70,50 @@ class Game {
    }
 
    openCard(card, cardWrapper) {
-      if (this.cardsOpen.length <= 2 && !this.disabledInput) {
-         this.disabledInput = true;
-         this.cardsOpen.push(card);
-         cardWrapper.classList.toggle("open");
-
-         // Second card
-         if (this.cardsOpen.length == 2) {
-            setTimeout(() => {
-               if (this.cardsOpen[0].name === this.cardsOpen[1].name) {
-                  // Same cards
-                  this.cardsLeft -= 2;
-                  this.cardsOpen.forEach((card) => {
-                     card.discovered = true;
-                     document.getElementsByClassName("card")[card.id].classList.add("hidden");
-                  });
-               } else {
-                  this.cardsOpen.forEach((card) => {
-                     document.getElementsByClassName("card")[card.id].classList.remove("open");
-                  });
-               }
-
-               this.cardsOpen = [];
-               this.disabledInput = false;
-
-               if (this.cardsLeft == 0) {
-                  this.finishGame(false);
-               }
-            }, 500);
-
-            this.incrementMoveCounter();
-         } else {
-            this.disabledInput = false;
-         }
+      // If both cards already open or card is hidden
+      if (this.disabledInput || cardWrapper.classList.contains("hidden")) {
+         return;
       }
+
+      // If the same card has been clicked
+      if (card.id == this.cardsOpen[0]?.id) {
+         return;
+      }
+
+      this.disabledInput = true;
+      this.cardsOpen.push(card);
+      cardWrapper.classList.toggle("open");
+
+      // First card
+      if (this.cardsOpen.length != 2) {
+         this.disabledInput = false;
+         return;
+      }
+
+      // Second card
+      setTimeout(() => {
+         if (this.cardsOpen[0].name === this.cardsOpen[1].name) {
+            // Same cards
+            this.cardsLeft -= 2;
+            this.cardsOpen.forEach((card) => {
+               card.discovered = true;
+               document.getElementsByClassName("card")[card.id].classList.add("hidden");
+            });
+         } else {
+            this.cardsOpen.forEach((card) => {
+               document.getElementsByClassName("card")[card.id].classList.remove("open");
+            });
+         }
+
+         this.cardsOpen = [];
+         this.disabledInput = false;
+
+         if (this.cardsLeft == 0) {
+            this.finishGame(false);
+         }
+      }, 500);
+
+      this.incrementMoveCounter();
    }
 
    incrementMoveCounter() {
@@ -113,8 +125,10 @@ class Game {
    finishGame(forced) {
       if (!forced) {
          showCongratulations();
+      } else {
+         document.dispatchEvent(gameFinishEvent);
       }
-
+      this.disabledInput = true;
       clearInterval(this.timeInterval);
    }
 }

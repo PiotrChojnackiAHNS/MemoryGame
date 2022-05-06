@@ -31,7 +31,22 @@ function showCongratulations() {
 
    setTimeout(() => {
       congratulationsWrapper.removeChild(congratulations);
+      document.dispatchEvent(gameFinishEvent);
    }, 5000);
+}
+
+function showHelloScreen() {
+   // /* <div class="hello-wrapper">
+   //     <h2>Kliknij aby rozpocząć nową grę</h2>
+   //     <button id="hello-start-button">Start game</button>
+   //  </div> */
+   const gameWrapper = document.getElementById("game");
+   gameWrapper.innerHTML = "";
+
+   const text = document.createElement("h2");
+   text.innerText = "Click the button above to start a new game";
+
+   gameWrapper.appendChild(text);
 }
 
 function appendCard(card, container, onClick) {
